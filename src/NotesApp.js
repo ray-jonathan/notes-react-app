@@ -35,7 +35,7 @@ export default class NotesApp extends React.Component{
                 <NotesList notes={this.state.notes} handleSelection={this._selectNote} />
             </div>
             <div className={styles.detail}>
-                <NotesDetail note={theNote} />
+                <NotesDetail note={theNote} handleSave={this._updateNote} />
             </div>
         </div>
         )
@@ -44,6 +44,26 @@ export default class NotesApp extends React.Component{
     _selectNote = (id) => {
         this.setState({
             selectedNote : id
+        })
+    }
+
+    _updateNote = (id, newText) => {
+        const updatedNotes = this.state.notes.map(note => {
+            if(note.id === id){
+                return {...note, text : newText} // overwrites the text property
+            }
+            else{
+                return {...note} // safely shallow copies all the key/value pairs
+            }
+        })
+        //// OR
+        // const updatedNotes = this.state.notes.filter(note => {
+        //     return note.id !== id
+        // }
+        // const noteToUpdate = this.state.notes.find(not => note.id === id);
+
+        this.setState({
+            notes : updatedNotes
         })
     }
 }
